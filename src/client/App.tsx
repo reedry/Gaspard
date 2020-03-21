@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import CardContent from "./CardContent";
+import Flashcard from "./Flashcard";
 import { runServerFunction, useInput } from "./common";
+import { Button } from "./CommonComponents";
 
 type StateName = "Menu" | "Flashcard" | "Result";
 
-type ColumnNumbers = {
+export type ColumnNumbers = {
   entry: number;
   check: number;
   categoryFrom: number;
@@ -30,8 +31,6 @@ const Wrapper = styled.div`
   margin: 0 auto;
 `;
 
-const Button = styled.button``;
-
 const App: React.FC = () => {
   const [state, setState] = useState<StateName>("Menu");
   const [isTableLoaded, setIsTableLoaded] = useState(false);
@@ -46,9 +45,6 @@ const App: React.FC = () => {
   const [table, setTable] = useState([[""]]);
 
   const [columns, setColumns] = useState<ColumnNumbers>(defaultColumnNumbers);
-
-  const [currentNumber, setCurrentNumber] = useState(1);
-  const [isCardFront, setIsCardFront] = useState(true);
 
   useEffect(() => {
     const loadSheetName = async () => {
@@ -75,27 +71,6 @@ const App: React.FC = () => {
     const num = Number(e.target.value);
     setColumns({ ...columns, [e.target.name]: num });
   };
-
-  const flipCard = () => {
-    setIsCardFront(false);
-  };
-  const nextCard = () => {
-    setIsCardFront(true);
-    setCurrentNumber(cur => cur + 1);
-  };
-  useEffect(() => {
-    const onKeyUp = () => {
-      if (isCardFront) {
-        flipCard();
-      } else {
-        nextCard();
-      }
-    };
-    window.addEventListener("keyup", onKeyUp);
-    return () => window.removeEventListener("keyup", onKeyUp);
-  }, [isCardFront]);
-
-  const current = table[currentNumber];
 
   return (
     <Wrapper>
@@ -200,23 +175,7 @@ const App: React.FC = () => {
         </div>
       )}
       {state == "Flashcard" && isTableLoaded && (
-        <>
-          <CardContent
-            category={current.slice(
-              columns.categoryFrom,
-              columns.categoryTo + 1
-            )}
-            front={current[columns.front]}
-            back={current[columns.back]}
-            notes={current.slice(columns.notes)}
-            isCardFront={isCardFront}
-          />
-          {isCardFront ? (
-            <Button onClick={flipCard}>Flip</Button>
-          ) : (
-            <Button onClick={nextCard}>Next</Button>
-          )}
-        </>
+        <Flashcard table={table} columns={columns}></Flashcard>
       )}
       {state == "Result" && <div></div>}
     </Wrapper>
