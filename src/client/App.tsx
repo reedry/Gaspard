@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Flashcard from "./Flashcard";
+import ColumnsGuide from "./ColumnsGuide";
 import { runServerFunction, useInput } from "./common";
 import { Button } from "./CommonComponents";
 
@@ -163,19 +164,13 @@ const App: React.FC = () => {
                   <Button type="submit">Submit</Button>
                 </p>
               </form>
-              <ul>
-                {table[0].map((v, i) => (
-                  <li>
-                    {i}: {v}
-                  </li>
-                ))}
-              </ul>
+              <ColumnsGuide headers={table[0]} />
             </div>
           )}
         </div>
       )}
       {state == "Flashcard" && isTableLoaded && (
-        <Flashcard table={table} columns={columns}></Flashcard>
+        <Flashcard table={table} columns={columns} />
       )}
       {state == "Result" && <div></div>}
     </Wrapper>
