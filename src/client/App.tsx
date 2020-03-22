@@ -73,6 +73,10 @@ const App: React.FC = () => {
     setColumns({ ...columns, [e.target.name]: num });
   };
 
+  const renderNumberInput = <Name extends keyof ColumnNumbers>(name: Name) => {
+    return <input type="number" name={name} onChange={handleFormChange} />
+  };
+
   return (
     <Wrapper>
       {state == "Menu" && (
@@ -113,54 +117,19 @@ const App: React.FC = () => {
                 }}
               >
                 <p>
-                  Entry:
-                  <input
-                    type="number"
-                    name="entry"
-                    onChange={handleFormChange}
-                  />
-                  Check:
-                  <input
-                    type="number"
-                    name="check"
-                    onChange={handleFormChange}
-                  />
+                  Entry: {renderNumberInput("entry")}
+                  Check: {renderNumberInput("check")}
                 </p>
                 <p>
-                  Category: from
-                  <input
-                    type="number"
-                    name="categoryFrom"
-                    onChange={handleFormChange}
-                  />
-                  to
-                  <input
-                    type="number"
-                    name="categoryTo"
-                    onChange={handleFormChange}
-                  />
+                  Category: from {renderNumberInput("categoryFrom")}
+                  to {renderNumberInput("categoryTo")}
                 </p>
                 <p>
-                  Card (front):
-                  <input
-                    type="number"
-                    name="front"
-                    onChange={handleFormChange}
-                  />
-                  Card (back):
-                  <input
-                    type="number"
-                    name="back"
-                    onChange={handleFormChange}
-                  />
+                  Card (front): {renderNumberInput("front")}
+                  Card (back): {renderNumberInput("back")}
                 </p>
                 <p>
-                  Notes:
-                  <input
-                    type="number"
-                    name="notes"
-                    onChange={handleFormChange}
-                  />
+                  Notes: {renderNumberInput("notes")}
                   <Button type="submit">Submit</Button>
                 </p>
               </form>
