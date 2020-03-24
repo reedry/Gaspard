@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CardContent from "./CardContent";
-import { ColumnNumbers } from "./App";
+import { ColumnNumbers } from "./types";
 import { Button } from "./CommonComponents";
 
 type FlashCardProps = {
