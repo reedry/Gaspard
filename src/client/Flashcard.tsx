@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import CardContent from "./CardContent";
-import { ColumnNumbers } from "./types";
+import { StateName, ColumnNumbers } from "./types";
 import { Button } from "./CommonComponents";
 
 type FlashCardProps = {
   table: string[][];
   columns: ColumnNumbers;
+  setCheck: (fn: (arr: boolean[]) => boolean[]) => void;
+  setState: (s: StateName) => void;
 };
 
 const Flashcard: React.FC<FlashCardProps> = props => {
@@ -15,16 +17,25 @@ const Flashcard: React.FC<FlashCardProps> = props => {
   const flipCard = () => {
     setIsCardFront(false);
   };
-  const nextCard = () => {
+  const nextCard = (isOk: boolean) => {
     setIsCardFront(true);
+    props.setCheck(prev => {
+      prev[currentNumber] = isOk;
+      console.log(prev.slice(1));
+      return prev;
+    });
     setCurrentNumber(cur => cur + 1);
   };
   useEffect(() => {
-    const onKeyUp = () => {
+    const onKeyUp = (e: KeyboardEvent) => {
       if (isCardFront) {
         flipCard();
       } else {
-        nextCard();
+        if (e.code === "Space") {
+          nextCard(true);
+        } else {
+          nextCard(false);
+        }
       }
     };
     window.addEventListener("keyup", onKeyUp);
@@ -46,8 +57,12 @@ const Flashcard: React.FC<FlashCardProps> = props => {
       {isCardFront ? (
         <Button onClick={flipCard}>Flip</Button>
       ) : (
-        <Button onClick={nextCard}>Next</Button>
+        <>
+          <Button onClick={() => nextCard(false)}>Don't know</Button>
+          <Button onClick={() => nextCard(true)}>OK</Button>
+        </>
       )}
+      <Button onClick={() => props.setState("Result")}>Exit</Button>
     </>
   );
 };
