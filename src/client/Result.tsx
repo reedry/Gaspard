@@ -10,13 +10,17 @@ type ResultProps = {
 const Result: React.FC<ResultProps> = props => {
   return (
     <>
-      <Button onClick={() => props.setState("Menu")}>Back to Menu</Button>
-      <textarea>
-        {props.check
-          .slice(1)
-          .map(b => (b ? "TRUE" : "FALSE"))
-          .join("\n")}
-      </textarea>
+      <div>
+        <Button onClick={() => props.setState("Menu")}>Back to Menu</Button>
+      </div>
+      <div>
+        <textarea>
+          {props.check
+            .slice(1)
+            .map(b => (b ? "TRUE" : "FALSE"))
+            .join("\n")}
+        </textarea>
+      </div>
     </>
   );
 };
