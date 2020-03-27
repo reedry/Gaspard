@@ -8,6 +8,7 @@ type MenuProps = {
   setState: (s: StateName) => void;
   tableState: [string[][], (t: string[][]) => void];
   columnsState: [ColumnNumbers, (c: ColumnNumbers) => void];
+  setCheck: (arr: boolean[]) => void;
 };
 
 const Menu: React.FC<MenuProps> = props => {
@@ -84,8 +85,10 @@ const Menu: React.FC<MenuProps> = props => {
         <div>
           <form
             onSubmit={() => {
+              props.setCheck(
+                table.map(row => JSON.stringify(row[columns.check]) === "true")
+              );
               props.setState("Flashcard");
-              console.log(columns);
             }}
           >
             <p>
