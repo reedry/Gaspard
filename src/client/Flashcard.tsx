@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import CardContent from "./CardContent";
-import { ColumnNumbers } from "./types";
+import { StateName, ColumnNumbers } from "./types";
 import { Button } from "./CommonComponents";
+import styled from "styled-components";
 
 type FlashCardProps = {
   table: string[][];
   columns: ColumnNumbers;
+  setCheck: (fn: (arr: boolean[]) => boolean[]) => void;
+  setState: (s: StateName) => void;
 };
+
+const ButtonWrapper = styled.div`
+  text-align: center;
+`;
 
 const Flashcard: React.FC<FlashCardProps> = props => {
   const [currentNumber, setCurrentNumber] = useState(1);
@@ -15,16 +22,24 @@ const Flashcard: React.FC<FlashCardProps> = props => {
   const flipCard = () => {
     setIsCardFront(false);
   };
-  const nextCard = () => {
+  const nextCard = (isOk: boolean) => {
     setIsCardFront(true);
+    props.setCheck(prev => {
+      prev[currentNumber] = isOk;
+      return prev;
+    });
     setCurrentNumber(cur => cur + 1);
   };
   useEffect(() => {
-    const onKeyUp = () => {
+    const onKeyUp = (e: KeyboardEvent) => {
       if (isCardFront) {
         flipCard();
       } else {
-        nextCard();
+        if (e.code === "Space") {
+          nextCard(true);
+        } else {
+          nextCard(false);
+        }
       }
     };
     window.addEventListener("keyup", onKeyUp);
@@ -44,10 +59,18 @@ const Flashcard: React.FC<FlashCardProps> = props => {
         isCardFront={isCardFront}
       />
       {isCardFront ? (
-        <Button onClick={flipCard}>Flip</Button>
+        <ButtonWrapper>
+          <Button onClick={flipCard}>Flip</Button>
+        </ButtonWrapper>
       ) : (
-        <Button onClick={nextCard}>Next</Button>
+        <ButtonWrapper>
+          <Button onClick={() => nextCard(false)}>Don't know</Button>
+          <Button onClick={() => nextCard(true)}>OK</Button>
+        </ButtonWrapper>
       )}
+      <ButtonWrapper>
+        <Button onClick={() => props.setState("Result")}>Exit</Button>
+      </ButtonWrapper>
     </>
   );
 };

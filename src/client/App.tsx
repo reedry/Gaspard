@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Menu from "./Menu";
 import Flashcard from "./Flashcard";
+import Result from "./Result";
 import { StateName, ColumnNumbers } from "./types";
 
 const defaultColumnNumbers: ColumnNumbers = {
@@ -23,6 +24,7 @@ const App: React.FC = () => {
   const [state, setState] = useState<StateName>("Menu");
   const [table, setTable] = useState([[""]]);
   const [columns, setColumns] = useState<ColumnNumbers>(defaultColumnNumbers);
+  const [check, setCheck] = useState([true]);
 
   return (
     <Wrapper>
@@ -31,10 +33,18 @@ const App: React.FC = () => {
           setState={setState}
           tableState={[table, setTable]}
           columnsState={[columns, setColumns]}
+          setCheck={setCheck}
         />
       )}
-      {state == "Flashcard" && <Flashcard table={table} columns={columns} />}
-      {state == "Result" && <div></div>}
+      {state == "Flashcard" && (
+        <Flashcard
+          table={table}
+          columns={columns}
+          setCheck={setCheck}
+          setState={setState}
+        />
+      )}
+      {state == "Result" && <Result setState={setState} check={check} />}
     </Wrapper>
   );
 };
