@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import CardContent from "./CardContent";
 import { StateName, ColumnNumbers } from "./types";
 import { Button } from "./CommonComponents";
+import styled from "styled-components";
 
 type FlashCardProps = {
   table: string[][];
@@ -9,6 +10,10 @@ type FlashCardProps = {
   setCheck: (fn: (arr: boolean[]) => boolean[]) => void;
   setState: (s: StateName) => void;
 };
+
+const ButtonWrapper = styled.div`
+  text-align: center;
+`;
 
 const Flashcard: React.FC<FlashCardProps> = props => {
   const [currentNumber, setCurrentNumber] = useState(1);
@@ -21,7 +26,6 @@ const Flashcard: React.FC<FlashCardProps> = props => {
     setIsCardFront(true);
     props.setCheck(prev => {
       prev[currentNumber] = isOk;
-      console.log(prev.slice(1));
       return prev;
     });
     setCurrentNumber(cur => cur + 1);
@@ -55,14 +59,18 @@ const Flashcard: React.FC<FlashCardProps> = props => {
         isCardFront={isCardFront}
       />
       {isCardFront ? (
-        <Button onClick={flipCard}>Flip</Button>
+        <ButtonWrapper>
+          <Button onClick={flipCard}>Flip</Button>
+        </ButtonWrapper>
       ) : (
-        <>
+        <ButtonWrapper>
           <Button onClick={() => nextCard(false)}>Don't know</Button>
           <Button onClick={() => nextCard(true)}>OK</Button>
-        </>
+        </ButtonWrapper>
       )}
-      <Button onClick={() => props.setState("Result")}>Exit</Button>
+      <ButtonWrapper>
+        <Button onClick={() => props.setState("Result")}>Exit</Button>
+      </ButtonWrapper>
     </>
   );
 };
