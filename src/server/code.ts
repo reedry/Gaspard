@@ -1,6 +1,8 @@
 const doGet = () => {
   const output = HtmlService.createHtmlOutputFromFile("index.html");
-  return output.addMetaTag("viewport", "width=device-width, initial-scale=1");
+  return output
+    .setTitle("Gaspard")
+    .addMetaTag("viewport", "width=device-width, initial-scale=1");
 };
 
 export function getSheetNames(url: string): string[] {
