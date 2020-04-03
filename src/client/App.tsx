@@ -3,17 +3,16 @@ import styled from "styled-components";
 import Menu from "./Menu";
 import Flashcard from "./Flashcard";
 import Result from "./Result";
-import { StateName, ColumnNumbers } from "./types";
+import { StateName, Columns } from "./types";
 import { useQueue } from "./hooks/queue";
 
-const defaultColumnNumbers: ColumnNumbers = {
+const defaultColumns: Columns = {
   entry: 0,
   check: 1,
-  categoryFrom: 2,
-  categoryTo: 4,
+  categories: [2, 3, 4],
   front: 5,
   back: 6,
-  notes: 7
+  notes: [7, 8, 9, 10]
 };
 
 const Wrapper = styled.div`
@@ -24,7 +23,7 @@ const Wrapper = styled.div`
 const App: React.FC = () => {
   const [state, setState] = useState<StateName>("Menu");
   const [table, setTable] = useState([[""]]);
-  const [columns, setColumns] = useState<ColumnNumbers>(defaultColumnNumbers);
+  const [columns, setColumns] = useState<Columns>(defaultColumns);
   const [check, setCheck] = useState([true]);
   const queue = useQueue([]);
 
