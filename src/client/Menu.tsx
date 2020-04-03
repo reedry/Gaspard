@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ColumnsGuide from "./ColumnsGuide";
-import { runServerFunction, useInput } from "./common";
+import { runServerFunction } from "./common";
+import { useInput } from "./hooks/input";
 import { Button } from "./CommonComponents";
 import { StateName, ColumnNumbers } from "./types";
 import { useQueue } from "./hooks/queue";
