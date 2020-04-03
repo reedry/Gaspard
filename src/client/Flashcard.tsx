@@ -57,6 +57,9 @@ const Flashcard: React.FC<FlashCardProps> = props => {
 
   return (
     <>
+      <div>
+        Card No. {currentNumber} ({props.queue.len()} cards left)
+      </div>
       <CardContent
         category={current.slice(
           props.columns.categoryFrom,
