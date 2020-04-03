@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import CardContent from "./CardContent";
-import { StateName, ColumnNumbers } from "./types";
+import { StateName, Columns } from "./types";
 import { Button } from "./CommonComponents";
 import styled from "styled-components";
 import { useQueue } from "./hooks/queue";
 
 type FlashCardProps = {
   table: string[][];
-  columns: ColumnNumbers;
+  columns: Columns;
   setCheck: (fn: (arr: boolean[]) => boolean[]) => void;
   setState: (s: StateName) => void;
   queue: ReturnType<typeof useQueue>;
@@ -16,6 +16,10 @@ type FlashCardProps = {
 const ButtonWrapper = styled.div`
   text-align: center;
 `;
+
+const filterColumns = (row: string[], arr: number[]): string[] => {
+  return row.filter((_, i) => arr.indexOf(i) !== -1);
+};
 
 const Flashcard: React.FC<FlashCardProps> = props => {
   const [currentNumber, setCurrentNumber] = useState(1);
@@ -66,13 +70,10 @@ const Flashcard: React.FC<FlashCardProps> = props => {
         Card No. {currentNumber} ({props.queue.len()} cards left)
       </div>
       <CardContent
-        category={current.slice(
-          props.columns.categoryFrom,
-          props.columns.categoryTo + 1
-        )}
+        category={filterColumns(current, props.columns.categories)}
         front={current[props.columns.front]}
         back={current[props.columns.back]}
-        notes={current.slice(props.columns.notes)}
+        notes={filterColumns(current, props.columns.notes)}
         isCardFront={isCardFront}
       />
       {isCardFront ? (
