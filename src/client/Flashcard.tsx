@@ -54,6 +54,11 @@ const Flashcard: React.FC<FlashCardProps> = props => {
     window.addEventListener("keyup", onKeyUp);
     return () => window.removeEventListener("keyup", onKeyUp);
   }, [isCardFront]);
+  useEffect(() => {
+    if (current[props.columns.entry] === "") {
+      nextCard(false);
+    }
+  }, [current]);
 
   return (
     <>
