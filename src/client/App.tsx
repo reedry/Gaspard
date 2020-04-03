@@ -4,6 +4,7 @@ import Menu from "./Menu";
 import Flashcard from "./Flashcard";
 import Result from "./Result";
 import { StateName, ColumnNumbers } from "./types";
+import { useQueue } from "./hooks/queue";
 
 const defaultColumnNumbers: ColumnNumbers = {
   entry: 0,
@@ -25,6 +26,7 @@ const App: React.FC = () => {
   const [table, setTable] = useState([[""]]);
   const [columns, setColumns] = useState<ColumnNumbers>(defaultColumnNumbers);
   const [check, setCheck] = useState([true]);
+  const queue = useQueue([]);
 
   return (
     <Wrapper>
@@ -34,6 +36,7 @@ const App: React.FC = () => {
           tableState={[table, setTable]}
           columnsState={[columns, setColumns]}
           setCheck={setCheck}
+          queue={queue}
         />
       )}
       {state == "Flashcard" && (
@@ -42,6 +45,7 @@ const App: React.FC = () => {
           columns={columns}
           setCheck={setCheck}
           setState={setState}
+          queue={queue}
         />
       )}
       {state == "Result" && <Result setState={setState} check={check} />}
