@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 type RPC = typeof import("../server/code");
 
 export const runServerFunction = <Name extends keyof RPC>(
@@ -12,13 +10,4 @@ export const runServerFunction = <Name extends keyof RPC>(
       .withFailureHandler(reject)
       [name](...args);
   });
-};
-
-export const useInput = (initialValue: string) => {
-  const [value, set] = useState(initialValue);
-  return {
-    value,
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
-      set(e.target.value)
-  };
 };
