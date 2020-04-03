@@ -3,12 +3,14 @@ import ColumnsGuide from "./ColumnsGuide";
 import { runServerFunction, useInput } from "./common";
 import { Button } from "./CommonComponents";
 import { StateName, ColumnNumbers } from "./types";
+import { useQueue } from "./hooks/queue";
 
 type MenuProps = {
   setState: (s: StateName) => void;
   tableState: [string[][], (t: string[][]) => void];
   columnsState: [ColumnNumbers, (c: ColumnNumbers) => void];
   setCheck: (arr: boolean[]) => void;
+  queue: ReturnType<typeof useQueue>;
 };
 
 const Menu: React.FC<MenuProps> = props => {
@@ -87,6 +89,9 @@ const Menu: React.FC<MenuProps> = props => {
             onSubmit={() => {
               props.setCheck(
                 table.map(row => JSON.stringify(row[columns.check]) === "true")
+              );
+              props.queue.concat(
+                Array.from({ length: table.length - 1 }, (_, i) => i + 1)
               );
               props.setState("Flashcard");
             }}
