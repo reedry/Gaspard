@@ -27,6 +27,8 @@ const Menu: React.FC<MenuProps> = props => {
   const [columns, setColumns] = props.columnsState;
   const [table, setTable] = props.tableState;
 
+  const [startFrom, setStartFrom] = useState(0);
+
   useEffect(() => {
     const loadSheetName = async () => {
       const names = await runServerFunction("getSheetNames", fetchUrl);
@@ -114,7 +116,10 @@ const Menu: React.FC<MenuProps> = props => {
                 table.map(row => JSON.stringify(row[columns.check]) === "true")
               );
               props.queue.concat(
-                Array.from({ length: table.length - 1 }, (_, i) => i + 1)
+                Array.from(
+                  { length: table.length - startFrom - 1 },
+                  (_, i) => startFrom + i + 1
+                )
               );
               props.setState("Flashcard");
             }}
@@ -128,8 +133,14 @@ const Menu: React.FC<MenuProps> = props => {
               Card (front): {renderNumberInput("front")}
               Card (back): {renderNumberInput("back")}
             </p>
+            <p>Notes: {renderArrayInput("notes")}</p>
             <p>
-              Notes: {renderArrayInput("notes")}
+              Start from:
+              <input
+                type="number"
+                value={startFrom}
+                onChange={e => setStartFrom(Number(e.target.value))}
+              />
               <Button type="submit">Submit</Button>
             </p>
           </form>
